@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/SoundProcessor.dir/main.cpp.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/main.cpp",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/main.cpp",
+  "output": "CMakeFiles/SoundProcessor.dir/main.cpp.o"
+}
+]
