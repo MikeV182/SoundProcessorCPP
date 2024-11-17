@@ -1,45 +1,61 @@
 #include <iostream>
-#include "src/SoundProcessor.hpp"
+#include <vector>
+#include <unordered_map>
 
-void printHelp() {
-    std::cout << "Usage: sound_processor -c <config.txt> <output.wav> <input1.wav> [<input2.wav> ...]" << std::endl;
-    // TODO: Добавить описание ковертеров
-}
+#include "src/WavFile.hpp"
+#include "src/ConfigParser.hpp"
+#include "src/ConverterFactory.hpp"
 
 int main(int argc, char* argv[]) {
-    if (argc < 4) {
-        printHelp();
-        return 1;
-    }
-
-    std::string configPath;
-    std::string outputFilePath;
-    std::vector<std::string> inputFilePaths;
-
-    for (int i = 1; i < argc; ++i) {
-        std::string arg = argv[i];
-        if (arg == "-h") {
-            printHelp();
-            return 0;
-        } else if (arg == "-c") {
-            if (i + 1 < argc) {
-                configPath = argv[++i];
-            } else {
-                std::cerr << "Error: Missing argument for -c" << std::endl;
-                return 1;
-            }
-        } else if (outputFilePath.empty()) {
-            outputFilePath = arg;
-        } else {
-            inputFilePaths.push_back(arg);
-        }
-    }
-
     try {
-        SoundProcessor processor(configPath, outputFilePath, inputFilePaths);
-        processor.process();
+        if (argc < 5 || std::string(argv[1]) == "-h") {
+            std::cout << "Usage: sound_processor -c <config.txt> <output.wav> <input1.wav> [<input2.wav> ...]\n";
+            return 0;
+        }
+
+        if (std::string(argv[1]) != "-c") {
+            throw std::invalid_argument("Invalid arguments. Use -h for help.");
+        }
+
+        std::string configFile = argv[2];
+        std::string outputFilename = argv[3];
+
+        std::vector<WavFile> inputFiles;
+        for (int i = 4; i < argc; ++i) {
+            inputFiles.emplace_back(argv[i]);
+        }
+
+        ConfigParser config(configFile);
+
+        auto samples = inputFiles[0].getSamples();
+        std::cout << "Initial samples size: " << samples.size() << std::endl;
+        for (int i = 0; i < samples.size(); i++) {
+            std::cout << "Initial sample " << i << ": " << samples.at(i) << std::endl;
+        }
+        std::cout << "============================\n";
+
+        std::unordered_map<int, std::vector<int16_t>> additionalStreams;
+        for (size_t i = 1; i < inputFiles.size(); ++i) {
+            additionalStreams[i] = inputFiles[i].getSamples();
+        }
+
+        for (const auto& [name, params] : config.getOperations()) {
+            auto converter = ConverterFactory::createConverter(name, params, additionalStreams);
+            converter->apply(samples);   
+        }
+
+        std::cout << "Final sample count: " << samples.size() << std::endl; 
+        for (int i = 0; i < samples.size(); i++) {
+            std::cout << "Final sample " << i << ": " << samples.at(i) << std::endl;
+        }
+
+        WavFile output(outputFilename);
+        output.getSamples() = samples;
+        output.save(outputFilename);
+
+        std::cout << "Processing completed. Output saved to " << outputFilename << "\n";
     } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << "\n";
         return 1;
     }
 

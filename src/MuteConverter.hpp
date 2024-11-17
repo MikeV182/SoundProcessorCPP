@@ -1,20 +1,20 @@
+#ifndef MUTE_CONVERTER_H
+#define MUTE_CONVERTER_H
+
 #include "Converter.hpp"
-#include "WavFile.hpp"
 
 class MuteConverter : public Converter {
-public:
-    MuteConverter(int start, int end) : start_(start), end_(end) {}
+    int startSample, endSample;
 
-    void process(WavFile& input, WavFile& output) override {
-        int startSample = start_ * input.getSampleRate();
-        int endSample = end_ * input.getSampleRate();
-        for (int i = startSample; i < endSample; ++i) {
-            output.getSamples()[i] = 0;
+public:
+    MuteConverter(int start, int end)
+        : startSample(start * SAMPLE_RATE), endSample(end * SAMPLE_RATE) {}
+
+    void apply(std::vector<int16_t>& samples) override {
+        for (int i = startSample; i < endSample && i < samples.size(); ++i) {
+            samples[i] = 0;
         }
     }
-
-private:
-    int start_;
-    int end_;
 };
 
+#endif
