@@ -26,13 +26,7 @@ int main(int argc, char* argv[]) {
         }
 
         ConfigParser config(configFile);
-
         auto samples = inputFiles[0].getSamples();
-        std::cout << "Initial samples size: " << samples.size() << std::endl;
-        for (int i = 0; i < samples.size(); i++) {
-            std::cout << "Initial sample " << i << ": " << samples.at(i) << std::endl;
-        }
-        std::cout << "============================\n";
 
         std::unordered_map<int, std::vector<int16_t>> additionalStreams;
         for (size_t i = 1; i < inputFiles.size(); ++i) {
@@ -42,11 +36,6 @@ int main(int argc, char* argv[]) {
         for (const auto& [name, params] : config.getOperations()) {
             auto converter = ConverterFactory::createConverter(name, params, additionalStreams);
             converter->apply(samples);   
-        }
-
-        std::cout << "Final sample count: " << samples.size() << std::endl; 
-        for (int i = 0; i < samples.size(); i++) {
-            std::cout << "Final sample " << i << ": " << samples.at(i) << std::endl;
         }
 
         WavFile output(outputFilename);

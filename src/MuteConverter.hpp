@@ -11,6 +11,10 @@ public:
         : startSample(start * SAMPLE_RATE), endSample(end * SAMPLE_RATE) {}
 
     void apply(std::vector<int16_t>& samples) override {
+        std::cout << "MuteConverter: startSample = " << startSample 
+                  << ", endSample = " << endSample 
+                  << ", samples.size() = " << samples.size() << "\n";
+
         for (int i = startSample; i < endSample && i < samples.size(); ++i) {
             samples[i] = 0;
         }

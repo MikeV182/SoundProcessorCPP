@@ -159,10 +159,8 @@ CMakeFiles/SoundProcessor.dir/main.cpp.o: /home/mike/Documents/Cpp/lectTask3/Sou
   /usr/include/c++/14/clocale \
   /usr/include/c++/14/concepts \
   /usr/include/c++/14/cstddef \
-  /usr/include/c++/14/cstdint \
   /usr/include/c++/14/cstdio \
   /usr/include/c++/14/cstdlib \
-  /usr/include/c++/14/cstring \
   /usr/include/c++/14/cwchar \
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
@@ -225,8 +223,6 @@ CMakeFiles/SoundProcessor.dir/main.cpp.o: /home/mike/Documents/Cpp/lectTask3/Sou
   /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
-  /usr/include/string.h \
-  /usr/include/strings.h \
   /usr/include/sys/cdefs.h \
   /usr/include/sys/select.h \
   /usr/include/sys/single_threaded.h \
@@ -246,8 +242,6 @@ CMakeFiles/SoundProcessor.dir/main.cpp.o: /home/mike/Documents/Cpp/lectTask3/Sou
 /usr/include/sys/single_threaded.h:
 
 /usr/include/sys/cdefs.h:
-
-/usr/include/string.h:
 
 /usr/include/stdc-predef.h:
 
@@ -320,8 +314,6 @@ CMakeFiles/SoundProcessor.dir/main.cpp.o: /home/mike/Documents/Cpp/lectTask3/Sou
 /usr/include/c++/14/debug/assertions.h:
 
 /usr/include/c++/14/cstdio:
-
-/usr/include/c++/14/cstdint:
 
 /usr/include/c++/14/cerrno:
 
@@ -513,8 +505,6 @@ CMakeFiles/SoundProcessor.dir/main.cpp.o: /home/mike/Documents/Cpp/lectTask3/Sou
 
 /usr/include/c++/14/cwchar:
 
-/usr/include/c++/14/cstring:
-
 /usr/include/c++/14/bits/charconv.h:
 
 /usr/include/c++/14/bits/shared_ptr_atomic.h:
@@ -704,8 +694,6 @@ CMakeFiles/SoundProcessor.dir/main.cpp.o: /home/mike/Documents/Cpp/lectTask3/Sou
 /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/src/WavFile.hpp:
 
 /usr/include/c++/14/bits/refwrap.h:
-
-/usr/include/strings.h:
 
 /usr/include/c++/14/iostream:
 

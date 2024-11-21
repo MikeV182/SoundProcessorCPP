@@ -4,10 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <string>
-#include <stdexcept>
 #include <cstdint>
-#include <cstring>
+#include <cstring> // Для memcmp
+#include <stdexcept>
 
 const int SAMPLE_RATE = 44100;
 const int BITS_PER_SAMPLE = 16;
@@ -17,19 +16,20 @@ const int BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8;
 class WavFile {
 public:
     struct WavHeader {
-        char chunkID[4];
-        uint32_t chunkSize;
-        char format[4];
-        char subchunk1ID[4];
-        uint32_t subchunk1Size;
-        uint16_t audioFormat;
-        uint16_t numChannels;
-        uint32_t sampleRate;
-        uint32_t byteRate;
-        uint16_t blockAlign;
-        uint16_t bitsPerSample;
-        char subchunk2ID[4];
-        uint32_t subchunk2Size;
+        char chunkID[4];        // "RIFF"
+        uint32_t chunkSize;     // Общий размер файла - 8 байт
+        char format[4];         // "WAVE"
+    };
+
+    struct FmtChunk {
+        char subchunk1ID[4];    // "fmt "
+        uint32_t subchunk1Size; // Размер fmt-чанка
+        uint16_t audioFormat;   // Аудиоформат (1 = PCM)
+        uint16_t numChannels;   // Количество каналов
+        uint32_t sampleRate;    // Частота дискретизации
+        uint32_t byteRate;      // Байт/секунда
+        uint16_t blockAlign;    // Размер блока
+        uint16_t bitsPerSample; // Бит на семпл
     };
 
     WavFile(const std::string& filename) {
@@ -43,13 +43,42 @@ public:
             throw std::runtime_error("Unsupported file format: " + filename);
         }
 
-        if (header.audioFormat != 1 || header.numChannels != CHANNELS || header.bitsPerSample != BITS_PER_SAMPLE ||
-            header.sampleRate != SAMPLE_RATE) {
+        FmtChunk fmtChunk{};
+        bool foundFmt = false, foundData = false;
+        uint32_t dataSize = 0;
+
+        while (file) {
+            char subchunkID[4];
+            uint32_t subchunkSize;
+
+            file.read(reinterpret_cast<char*>(&subchunkID), sizeof(subchunkID));
+            if (!file) break;
+            file.read(reinterpret_cast<char*>(&subchunkSize), sizeof(subchunkSize));
+
+            if (strncmp(subchunkID, "fmt ", 4) == 0) {
+                file.read(reinterpret_cast<char*>(&fmtChunk), sizeof(FmtChunk) - 8); // -8 из-за subchunkID и subchunkSize
+                foundFmt = true;
+            } else if (strncmp(subchunkID, "data", 4) == 0) {
+                dataSize = subchunkSize;
+                data.resize(dataSize / BYTES_PER_SAMPLE);
+                file.read(reinterpret_cast<char*>(data.data()), dataSize);
+                foundData = true;
+            } else {
+                file.seekg(subchunkSize, std::ios::cur);
+            }
+        }
+
+        if (!foundFmt || !foundData) {
+            throw std::runtime_error("Required chunks (fmt or data) not found in file: " + filename);
+        }
+
+        if (fmtChunk.audioFormat != 1 || fmtChunk.numChannels != CHANNELS ||
+            fmtChunk.bitsPerSample != BITS_PER_SAMPLE || fmtChunk.sampleRate != SAMPLE_RATE) {
             throw std::runtime_error("Unsupported audio format in file: " + filename);
         }
 
-        data.resize(header.subchunk2Size / BYTES_PER_SAMPLE);
-        file.read(reinterpret_cast<char*>(data.data()), header.subchunk2Size);
+        this->fmtChunk = fmtChunk;
+        this->dataSize = dataSize;
     }
 
     void save(const std::string& filename) {
@@ -58,20 +87,31 @@ public:
             throw std::runtime_error("Unable to save file: " + filename);
         }
 
-        header.subchunk2Size = data.size() * BYTES_PER_SAMPLE;
-        header.chunkSize = 36 + header.subchunk2Size;
+        uint32_t newDataSize = data.size() * BYTES_PER_SAMPLE;
+        uint32_t newChunkSize = 36 + newDataSize;
 
-        std::cout << "Header - subchunk2Size: " << header.subchunk2Size << std::endl;
-        std::cout << "Header - chunkSize: " << header.chunkSize << std::endl;
+        WavHeader newHeader = header;
+        newHeader.chunkSize = newChunkSize;
+        file.write(reinterpret_cast<char*>(&newHeader), sizeof(WavHeader));
 
-        file.write(reinterpret_cast<char*>(&header), sizeof(WavHeader));
-        file.write(reinterpret_cast<char*>(data.data()), header.subchunk2Size);
+        FmtChunk newFmtChunk = fmtChunk;
+        file.write("fmt ", 4);
+        file.write(reinterpret_cast<char*>(&newFmtChunk.subchunk1Size), sizeof(newFmtChunk.subchunk1Size));
+        file.write(reinterpret_cast<char*>(&newFmtChunk.audioFormat), sizeof(FmtChunk) - 8); // -8 из-за subchunkID и subchunkSize
+
+        file.write("data", 4);
+        file.write(reinterpret_cast<char*>(&newDataSize), sizeof(newDataSize));
+        file.write(reinterpret_cast<char*>(data.data()), newDataSize);
+
+        std::cout << "File successfully saved as " << filename << std::endl;
     }
 
     std::vector<int16_t>& getSamples() { return data; }
 
 private:
     WavHeader header;
+    FmtChunk fmtChunk;
+    uint32_t dataSize;
     std::vector<int16_t> data;
 };
 
