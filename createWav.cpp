@@ -8,7 +8,6 @@ const int BITS_PER_SAMPLE = 16;     // Разрядность
 const int CHANNELS = 1;             // Моно
 const int BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8;
 
-// Структура заголовка WAV
 struct WavHeader {
     char chunkID[4] = {'R', 'I', 'F', 'F'};       // "RIFF"
     uint32_t chunkSize = 36;                     // Размер файла - 8 байт

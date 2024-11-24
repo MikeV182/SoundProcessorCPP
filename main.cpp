@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
         std::unordered_map<int, std::vector<int16_t>> additionalStreams;
         for (size_t i = 1; i < inputFiles.size(); ++i) {
-            additionalStreams[i] = inputFiles[i].getSamples();
+            additionalStreams[i+1] = inputFiles[i].getSamples();
         }
 
         for (const auto& [name, params] : config.getOperations()) {

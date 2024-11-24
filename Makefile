@@ -2,16 +2,19 @@ all:
 	cd build && make
 
 1:
-	./build/SoundProcessor -c audio_samples/config1.txt audio_samples/output.wav audio_samples/Strange_Days_Are_Here_To_Stay_mono_16bit.wav
+	cd build && ./SoundProcessor -c ../audio_samples/config1.txt output.wav input1.wav 
 
 2:
-	./build/SoundProcessor -c audio_samples/config2.txt audio_samples/output.wav audio_samples/Strange_Days_Are_Here_To_Stay_mono_16bit.wav audio_samples/sugar_honey_ice_tea_mono_16bit.wav
+	cd build && ./SoundProcessor -c ../audio_samples/config2.txt output.wav input1.wav input2.wav 
+
+3:
+	cd build && ./SoundProcessor -c ../audio_samples/config3.txt output.wav input2.wav 
 
 ma:
 	g++ createWav.cpp
 	./a.out
 	rm a.out
-	cp output.wav audio_samples/
+	cp output.wav build/
 	rm output.wav
 
 givenSamples:

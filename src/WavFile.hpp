@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
-#include <cstring> // Для memcmp
+#include <cstring>
 #include <stdexcept>
 
 const int SAMPLE_RATE = 44100;
@@ -17,19 +17,8 @@ class WavFile {
 public:
     struct WavHeader {
         char chunkID[4];        // "RIFF"
-        uint32_t chunkSize;     // Общий размер файла - 8 байт
+        uint32_t chunkSize;     // Overall filesize - 8 bytes
         char format[4];         // "WAVE"
-    };
-
-    struct FmtChunk {
-        char subchunk1ID[4];    // "fmt "
-        uint32_t subchunk1Size; // Размер fmt-чанка
-        uint16_t audioFormat;   // Аудиоформат (1 = PCM)
-        uint16_t numChannels;   // Количество каналов
-        uint32_t sampleRate;    // Частота дискретизации
-        uint32_t byteRate;      // Байт/секунда
-        uint16_t blockAlign;    // Размер блока
-        uint16_t bitsPerSample; // Бит на семпл
     };
 
     WavFile(const std::string& filename) {
@@ -39,69 +28,63 @@ public:
         }
 
         file.read(reinterpret_cast<char*>(&header), sizeof(WavHeader));
+        
         if (strncmp(header.chunkID, "RIFF", 4) != 0 || strncmp(header.format, "WAVE", 4) != 0) {
             throw std::runtime_error("Unsupported file format: " + filename);
         }
 
-        FmtChunk fmtChunk{};
-        bool foundFmt = false, foundData = false;
-        uint32_t dataSize = 0;
-
-        while (file) {
-            char subchunkID[4];
-            uint32_t subchunkSize;
-
-            file.read(reinterpret_cast<char*>(&subchunkID), sizeof(subchunkID));
-            if (!file) break;
+        while (file.read(reinterpret_cast<char*>(&subchunkID), sizeof(subchunkID))) {
             file.read(reinterpret_cast<char*>(&subchunkSize), sizeof(subchunkSize));
 
-            if (strncmp(subchunkID, "fmt ", 4) == 0) {
-                file.read(reinterpret_cast<char*>(&fmtChunk), sizeof(FmtChunk) - 8); // -8 из-за subchunkID и subchunkSize
-                foundFmt = true;
-            } else if (strncmp(subchunkID, "data", 4) == 0) {
-                dataSize = subchunkSize;
-                data.resize(dataSize / BYTES_PER_SAMPLE);
-                file.read(reinterpret_cast<char*>(data.data()), dataSize);
-                foundData = true;
-            } else {
-                file.seekg(subchunkSize, std::ios::cur);
+            if (strncmp(subchunkID, "data", 4) == 0) {
+                break;
             }
+
+            file.seekg(subchunkSize, std::ios::cur);
         }
 
-        if (!foundFmt || !foundData) {
-            throw std::runtime_error("Required chunks (fmt or data) not found in file: " + filename);
+        if (strncmp(subchunkID, "data", 4) != 0) {
+            throw std::runtime_error("Subchunk \'data\' cannot be found");
         }
 
-        if (fmtChunk.audioFormat != 1 || fmtChunk.numChannels != CHANNELS ||
-            fmtChunk.bitsPerSample != BITS_PER_SAMPLE || fmtChunk.sampleRate != SAMPLE_RATE) {
-            throw std::runtime_error("Unsupported audio format in file: " + filename);
-        }
+        std::cout << "Audio data size: " << subchunkSize << " bytes" << std::endl;
 
-        this->fmtChunk = fmtChunk;
-        this->dataSize = dataSize;
+        data.resize(subchunkSize / BYTES_PER_SAMPLE);
+        file.read(reinterpret_cast<char*>(data.data()), subchunkSize);
+        file.close();
     }
 
     void save(const std::string& filename) {
-        std::ofstream file(filename, std::ios::binary);
-        if (!file.is_open()) {
+        std::ofstream outputFile(filename, std::ios::binary);
+        if (!outputFile) {
             throw std::runtime_error("Unable to save file: " + filename);
         }
 
-        uint32_t newDataSize = data.size() * BYTES_PER_SAMPLE;
-        uint32_t newChunkSize = 36 + newDataSize;
+        header.chunkSize = 4 + (8 + subchunkSize); // Обновляем общий размер файла
+        outputFile.write(reinterpret_cast<char*>(&header), sizeof(WavHeader));
 
-        WavHeader newHeader = header;
-        newHeader.chunkSize = newChunkSize;
-        file.write(reinterpret_cast<char*>(&newHeader), sizeof(WavHeader));
+        outputFile.write("fmt ", 4);
+        uint32_t fmtChunkSize = 16;
+        outputFile.write(reinterpret_cast<char*>(&fmtChunkSize), sizeof(fmtChunkSize));
 
-        FmtChunk newFmtChunk = fmtChunk;
-        file.write("fmt ", 4);
-        file.write(reinterpret_cast<char*>(&newFmtChunk.subchunk1Size), sizeof(newFmtChunk.subchunk1Size));
-        file.write(reinterpret_cast<char*>(&newFmtChunk.audioFormat), sizeof(FmtChunk) - 8); // -8 из-за subchunkID и subchunkSize
+        uint16_t audioFormat = 1;
+        uint16_t numChannels = CHANNELS;
+        uint32_t sampleRate = SAMPLE_RATE;
+        uint32_t byteRate = SAMPLE_RATE * CHANNELS * BYTES_PER_SAMPLE;
+        uint16_t blockAlign = CHANNELS * BYTES_PER_SAMPLE;
+        uint16_t bitsPerSample = BITS_PER_SAMPLE;
 
-        file.write("data", 4);
-        file.write(reinterpret_cast<char*>(&newDataSize), sizeof(newDataSize));
-        file.write(reinterpret_cast<char*>(data.data()), newDataSize);
+        outputFile.write(reinterpret_cast<char*>(&audioFormat), sizeof(audioFormat));
+        outputFile.write(reinterpret_cast<char*>(&numChannels), sizeof(numChannels));
+        outputFile.write(reinterpret_cast<char*>(&sampleRate), sizeof(sampleRate));
+        outputFile.write(reinterpret_cast<char*>(&byteRate), sizeof(byteRate));
+        outputFile.write(reinterpret_cast<char*>(&blockAlign), sizeof(blockAlign));
+        outputFile.write(reinterpret_cast<char*>(&bitsPerSample), sizeof(bitsPerSample));
+
+        outputFile.write("data", 4);
+        outputFile.write(reinterpret_cast<char*>(&subchunkSize), sizeof(subchunkSize));
+        outputFile.write(reinterpret_cast<char*>(data.data()), subchunkSize);
+        outputFile.close();
 
         std::cout << "File successfully saved as " << filename << std::endl;
     }
@@ -110,8 +93,8 @@ public:
 
 private:
     WavHeader header;
-    FmtChunk fmtChunk;
-    uint32_t dataSize;
+    char subchunkID[4];
+    uint32_t subchunkSize; 
     std::vector<int16_t> data;
 };
 
