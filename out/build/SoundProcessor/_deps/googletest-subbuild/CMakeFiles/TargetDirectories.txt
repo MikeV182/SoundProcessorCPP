@@ -1,0 +1,3 @@
+/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/out/build/SoundProcessor/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
+/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/out/build/SoundProcessor/_deps/googletest-subbuild/CMakeFiles/edit_cache.dir
+/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/out/build/SoundProcessor/_deps/googletest-subbuild/CMakeFiles/rebuild_cache.dir

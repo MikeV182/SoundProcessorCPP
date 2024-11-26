@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/wav_file_tests.dir/test/WavFileTests.cpp.o -o wav_file_tests  lib/libgtest.a lib/libgtest_main.a lib/libgtest.a

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-g++"
+	BuildStamp="20241126-0428-Experimental"
+	Name="bugwriter"
+	Generator="ctest-3.30.5"
+	CompilerName="/usr/bin/g++"
+	CompilerVersion="14.2.1"
+	OSName="Linux"
+	Hostname="bugwriter"
+	OSRelease="6.11.8-200.fc40.x86_64"
+	OSVersion="#1 SMP PREEMPT_DYNAMIC Thu Nov 14 20:38:18 UTC 2024"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="25"
+	ModelID="80"
+	ProcessorCacheSize="512"
+	NumberOfLogicalCPU="16"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="8191"
+	TotalPhysicalMemory="15378"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="4215.98"
+	>
+	<Testing>
+		<StartDateTime>Nov 26 14:33 +07</StartDateTime>
+		<StartTestTime>1732606388</StartTestTime>
+		<TestList/>
+		<EndDateTime>Nov 26 14:33 +07</EndDateTime>
+		<EndTestTime>1732606388</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

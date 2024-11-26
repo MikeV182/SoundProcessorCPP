@@ -1,0 +1,5 @@
+# Complex file with mixed entries
+operation1 arg1 arg2 arg3
+# Comment about operation2
+operation2
+operation3 arg4

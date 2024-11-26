@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/converter_tests.dir/test/ConverterTests.cpp.o -o converter_tests  lib/libgtest.a lib/libgtest_main.a lib/libgtest.a

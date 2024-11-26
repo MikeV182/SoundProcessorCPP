@@ -1,8 +1,50 @@
 [
 {
   "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build",
-  "command": "/usr/bin/c++   -g -o CMakeFiles/SoundProcessor.dir/main.cpp.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/main.cpp",
+  "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/SoundProcessor.dir/main.cpp.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/main.cpp",
   "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/main.cpp",
   "output": "CMakeFiles/SoundProcessor.dir/main.cpp.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build",
+  "command": "/usr/bin/c++  -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -o CMakeFiles/config_tests.dir/test/ConfigParserTests.cpp.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/test/ConfigParserTests.cpp",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/test/ConfigParserTests.cpp",
+  "output": "CMakeFiles/config_tests.dir/test/ConfigParserTests.cpp.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build",
+  "command": "/usr/bin/c++  -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -o CMakeFiles/converter_tests.dir/test/ConverterTests.cpp.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/test/ConverterTests.cpp",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/test/ConverterTests.cpp",
+  "output": "CMakeFiles/converter_tests.dir/test/ConverterTests.cpp.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build",
+  "command": "/usr/bin/c++  -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -o CMakeFiles/wav_file_tests.dir/test/WavFileTests.cpp.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/test/WavFileTests.cpp",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/test/WavFileTests.cpp",
+  "output": "CMakeFiles/wav_file_tests.dir/test/WavFileTests.cpp.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-build/googlemock",
+  "command": "/usr/bin/c++  -I/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock/include -I/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock/src/gmock-all.cc",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock/src/gmock-all.cc",
+  "output": "_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-build/googlemock",
+  "command": "/usr/bin/c++  -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+  "output": "_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-build/googletest",
+  "command": "/usr/bin/c++  -I/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -I/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/src/gtest-all.cc",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/src/gtest-all.cc",
+  "output": "_deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o"
+},
+{
+  "directory": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-build/googletest",
+  "command": "/usr/bin/c++  -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/include -isystem /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest -g -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/src/gtest_main.cc",
+  "file": "/home/mike/Documents/Cpp/lectTask3/SoundProcessorCPP/build/_deps/googletest-src/googletest/src/gtest_main.cc",
+  "output": "_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o"
 }
 ]
